@@ -1,6 +1,7 @@
 # SNELF Front End
 
-Para testar a aplicação:
-Após fazer o clone do repositório, no diretório raiz, instale as dependências com: '''npm install'''
+Para testar a aplicação, clone o repositório.
 
-Inicie a aplicação com: '''npm start'''
+No diretório raiz `snelf-frontend`, instale as dependências com o comando `npm install`
+
+Inicie a aplicação com `npm start`
