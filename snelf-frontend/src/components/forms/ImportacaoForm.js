@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
+const IMPORTACAO_ENDPOINT = `http://127.0.0.1:8000/importacaoCsv`;
+
 export default function ImportacaoForm() {
     const [csvFile, setCsvFile] = React.useState();
     const [filename, setFilename] = React.useState("");
@@ -14,15 +16,20 @@ export default function ImportacaoForm() {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(csvFile);
+        const formData = new FormData();
+        formData.append("csvFile", csvFile);
+        await fetch(IMPORTACAO_ENDPOINT, {
+            method: "POST",
+            body: formData,
+        }).then(response => console.log(response.json()))
     };
 
     return (
-        <Box p={{ xs: 10, sm: 6, md: 15 }} height='80vh' width='50vh' m="auto">
+        <Box p={{ xs: 8, sm: 6, md: 9 }} height='80vh' width='60vh' m="auto">
             <Paper elevation={5}>
-                <Box pb={5}>
+                <Box pb={5} m={5}>
                     <Grid
                         container
                         spacing={0}
@@ -55,7 +62,7 @@ export default function ImportacaoForm() {
                         </Grid>
                         <Grid item>
                             <Button component="label" variant="contained" type="submit" onClick={handleSubmit}>
-                                Enviar
+                                Importar
                             </Button>
                         </Grid>
                     </Grid>

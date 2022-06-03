@@ -1,11 +1,11 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/navbar/Navbar'
 
 export default function Sobre() {
     return (
         <div>
             <Navbar />
-            <div>Sobre</div>
+            
         </div>
     )
 }

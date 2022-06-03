@@ -14,12 +14,12 @@ const root = ReactDOM.createRoot(
     document.getElementById("root")
 );
 root.render(
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="importacao" element={<Importacao />} />
-            <Route path="busca" element={<Busca />} />
-            <Route path="sobre" element={<Sobre />} />
-        </Routes>
-    </BrowserRouter>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="importacao" element={<Importacao />} />
+                <Route path="busca" element={<Busca />} />
+                <Route path="sobre" element={<Sobre />} />
+            </Routes>
+        </BrowserRouter>
 );
