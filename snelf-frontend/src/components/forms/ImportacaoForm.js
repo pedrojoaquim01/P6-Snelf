@@ -20,39 +20,46 @@ export default function ImportacaoForm() {
     };
 
     return (
-        <Box p={{ xs: 10, sm: 6, md: 10 }}>
-            <Paper elevation={4}>
-                <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    rowSpacing={1}
-                    alignItems="center"
-                    style={{ minHeight: '80vh' }}
-                >
-                    <Box py={14}>
-                        <Typography variant="h4">
-                            Importar DataSet
-                        </Typography>
-                    </Box>
+        <Box p={{ xs: 10, sm: 6, md: 15 }} height='80vh' width='50vh' m="auto">
+            <Paper elevation={5}>
+                <Box pb={5}>
+                    <Grid
+                        container
+                        spacing={0}
+                        direction="column"
+                        rowSpacing={1}
+                        alignItems="center"
+                    >
+                        <Box pt={5} pb={1} textAlign="center">
+                            <Typography variant="h4">
+                                Importar Base de Dados
+                            </Typography>
+                        </Box>
 
-                    <Grid item>
-                        <Button component="label" variant="contained" startIcon={<UploadFileIcon />}>
-                            Upload CSV
-                            <input type="file" accept=".csv" onChange={handleChange} hidden />
-                        </Button>
+                        <Box p={2} pb={14} textAlign="center">
+                            <Typography variant="h8">
+                                Importe aqui o arquivo CSV contendo a base de dados à ser utilizada para o treinamento do modelo.
+                            </Typography>
+                        </Box>
+
+                        <Grid item>
+                            <Button component="label" variant="contained" startIcon={<UploadFileIcon />}>
+                                Upload CSV
+                                <input type="file" accept=".csv" onChange={handleChange} hidden />
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant='h5'>
+                                {filename}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Button component="label" variant="contained" type="submit" onClick={handleSubmit}>
+                                Enviar
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Typography variant='h5'>
-                            {filename}
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Button component="label" variant="contained" type="submit" onClick={handleSubmit}>
-                            Enviar
-                        </Button>
-                    </Grid>
-                </Grid>
+                </Box>
             </Paper>
         </Box>
     );
