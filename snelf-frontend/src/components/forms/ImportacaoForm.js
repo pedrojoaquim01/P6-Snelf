@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, Paper, Typography } from '@mui/material';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 const IMPORTACAO_ENDPOINT = `http://127.0.0.1:8000/importacaoCsv`;
@@ -7,6 +7,7 @@ const IMPORTACAO_ENDPOINT = `http://127.0.0.1:8000/importacaoCsv`;
 export default function ImportacaoForm() {
     const [csvFile, setCsvFile] = React.useState();
     const [filename, setFilename] = React.useState("");
+    const [resultMessage, setResultMessage] = React.useState();
 
     const handleChange = (e) => {
         if (e.target.files.length) {
@@ -23,11 +24,21 @@ export default function ImportacaoForm() {
         await fetch(IMPORTACAO_ENDPOINT, {
             method: "POST",
             body: formData,
-        }).then(response => console.log(response.json()))
+        })
+        .then(r => r.json().then(data => ({ status: r.status, body: data })))
+        .then(obj => {
+            console.log(obj);
+            if(obj.status===200){
+                setResultMessage(<Alert variant='filled' severity='success' onClose={() => {setResultMessage()}}>CSV Importado com sucesso</Alert>);
+            }else{
+                setResultMessage(<Alert variant='filled' severity='error' onClose={() => {setResultMessage()}}>Ocorreu um erro na importação do CSV. Código {obj.status}</Alert>);
+            }
+        });
     };
 
     return (
         <Box p={{ xs: 8, sm: 6, md: 9 }} height='80vh' width='60vh' m="auto">
+            {resultMessage}
             <Paper elevation={5}>
                 <Box pb={5} m={5}>
                     <Grid

@@ -1,3 +1,4 @@
+import string
 import pandas as pd
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,5 +21,7 @@ app.add_middleware(
 #rota de importação do csv. estudando como fazer para upload em csv maior
 @app.post("/importacaoCsv")
 async def importacaoCsv(csvFile: UploadFile = File(...)):
-    #df = pd.read_csv(csvFile.file).head()
-    return "olalala"
+    #Chamar o pipeline de importação
+    #   -> primeiro chamar a função que inicia o treinamento do modelo passando o csv
+    #   -> chamar a função que cria o banco sqlite
+    return "Importação feita com sucesso"
