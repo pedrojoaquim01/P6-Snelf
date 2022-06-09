@@ -11,7 +11,6 @@ export default function ImportacaoForm() {
 
     const handleChange = (e) => {
         if (e.target.files.length) {
-            // If input type is correct set the state
             setCsvFile(e.target.files[0]);
             setFilename(e.target.files[0].name);
         }
@@ -35,9 +34,9 @@ export default function ImportacaoForm() {
             }
         });
     };
-
+    
     return (
-        <Box p={{ xs: 8, sm: 6, md: 9 }} height='80vh' width='60vh' m="auto">
+        <Box p={{ xs: 8, sm: 6, md: 6 }} height='80vh' width='60vh' m="auto">
             {resultMessage}
             <Paper elevation={5}>
                 <Box pb={5} m={5}>
@@ -56,20 +55,21 @@ export default function ImportacaoForm() {
 
                         <Box p={2} pb={14} textAlign="center">
                             <Typography variant="h8">
-                                Importe aqui o arquivo CSV contendo a base de dados à ser utilizada para o treinamento do modelo.
+                                Importe aqui o arquivo CSV contendo a base de dados à ser utilizada para o treinamento do modelo de inferência.
                             </Typography>
                         </Box>
+
+                        <Grid item>
+                            <Typography variant='h5'>
+                                {filename}
+                            </Typography>
+                        </Grid>
 
                         <Grid item>
                             <Button component="label" variant="contained" startIcon={<UploadFileIcon />}>
                                 Upload CSV
                                 <input type="file" accept=".csv" onChange={handleChange} hidden />
                             </Button>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant='h5'>
-                                {filename}
-                            </Typography>
                         </Grid>
                         <Grid item>
                             <Button component="label" variant="contained" type="submit" onClick={handleSubmit}>
