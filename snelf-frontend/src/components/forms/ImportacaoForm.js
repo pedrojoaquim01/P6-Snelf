@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Alert, Box, Button, Grid, Paper, Typography } from '@mui/material';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-const IMPORTACAO_ENDPOINT = `http://127.0.0.1:8000/importacaoCsv`;
+const IMPORTACAO_ENDPOINT = `http://127.0.0.1:5000/importarCsv`;
 
 export default function ImportacaoForm() {
     const [csvFile, setCsvFile] = React.useState();

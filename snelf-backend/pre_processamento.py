@@ -15,7 +15,7 @@ from string import punctuation
 import time
 import imblearn
 import asyncio
-from libs.extractor import Extractor as xtc
+from selectorlib import Extractor as xtc
 
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.model_selection import train_test_split
