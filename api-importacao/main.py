@@ -30,7 +30,7 @@ async def importacaoCsv(csvFile: UploadFile = File(...)):
         #modifica o csv para formato que é aceito no treinamento
         #cleaned_dataset = clean_dataset(csvFile)
         #aqui seria a chamada para a api do modelo, iniciando o pré processamento
-        #inicia_pre_processamento(cleaned_dataset)
+        await inicia_pre_processamento(csvFile)
         return {"filename": csvFile.filename, "status":"Arquivo recebido na API de importação"}
     else:
         raise HTTPException(status_code=422, detail="Formato de arquivo não suportado")

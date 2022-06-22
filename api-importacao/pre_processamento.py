@@ -17,7 +17,7 @@ import asyncio
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.model_selection import train_test_split
 
-import Extractor as xtc
+from selectorlib  import Extractor as xtc
 
 #Carrega dados
 #data_path = '../datasets/medicamentos/'
@@ -89,9 +89,9 @@ async def inicia_pre_processamento(csvFile):
 
     #Pensar em como executar o data augmentation
     async def data_Augmentation():
-        os.system('python ./data_augmentation/data_augmentation.py "./teste/medicamentos.csv" "./teste/medicamentos_aumentado.csv" medicamentos 5')
+        os.system('python ./data_augmentation.py "./teste/medicamentos.csv" "./teste/medicamentos_aumentado.csv" medicamentos 5')
 
-    #await data_Augmentation()    
+    await data_Augmentation()    
     
     #PRÉ PROCESSAMENTO PÓS AUGMENTATION
     # loading new_stopwords
