@@ -24,8 +24,8 @@ async def root():
     return {"message": "Hello World"}
 
 #rota de importação do csv. estudando como fazer para upload em csv maior
-@app.post("/importacaoCsv")
-async def importacaoCsv(csvFile: UploadFile = File(...)):
+@app.post("/importarCsv")
+async def importarCsv(csvFile: UploadFile = File(...)):
     if csvFile.filename.endswith('.csv'):
         #modifica o csv para formato que é aceito no treinamento
         #cleaned_dataset = clean_dataset(csvFile)

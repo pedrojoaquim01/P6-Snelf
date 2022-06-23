@@ -1,6 +1,6 @@
-from log import init_log, register_log
+import logging
 import argparse
-from google import googleSearch
+from googlesearch import search
 
 
 def argument_parser():
@@ -98,7 +98,7 @@ def proc_response(response, termos_desc, ean, s, dataset_name):
         termos_new = [t for t in new_desc.split() if len(t) > 2]
         # se possui pelo menos um termo da descrição original, adiciona ao conjunto
         if is_subset(termos_desc, termos_new):
-            new_row = '{};{};{}\n'.format(cod, new_desc, ean)
+            new_row = '{};{};{}\n'.format(Scod, new_desc, ean)
             s.add(new_row)
 
 
@@ -117,23 +117,23 @@ def main():
     # TODO: validar args
 
     # inicializando o log
-    init_log(args.dataset_name, args.use_col)
+    #logging.basicConfig(,args.dataset_name)
 
     # carregando dados
     data = load_data(args.src_file)
-    register_log('Data loaded.')
+    print('Data loaded.')
 
     # criando o arquivo target
     create_file(args.target_file)
-    register_log('Target file created.')
+    print('Target file created.')
 
     # inits
     buffer = 100
     data_augmented = list()
     extract_terms = get_function(args.dataset_name)
-    register_log('Initialized variables.')
+    print('Initialized variables.')
 
-    register_log('Process started.', print_msg=True)
+    print('Process started.')
 
     # process
     for i in range(1,len(data)):
@@ -151,7 +151,7 @@ def main():
         s = init_set(descricao, ean, args.dataset_name)
 
         # realiza a busca no google
-        response = googleSearch(descricao, delay=args.request_delay)
+        response = search(descricao)
 
         # extrai os dados pertinentes
         proc_response(response, termos_desc, ean, s, args.dataset_name)
@@ -166,13 +166,13 @@ def main():
             data_augmented = list()
 
         if i%100 == 0:
-            register_log('{} rows processed.'.format(i))
+            print('{} rows processed.'.format(i))
         
     # descarrega o buffer residual em arquivo
     if len(data_augmented) > 0:
         write_data(args.target_file, data_augmented)
 
-    register_log('Process finished.', print_msg=True)
+    print('Process finished.')
 
 
 if __name__ == "__main__":
