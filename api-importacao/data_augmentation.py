@@ -53,7 +53,6 @@ def write_data(target_file, data):
     with open(target_file, 'a') as f:
         f.write(''.join(data))
 
-
 def extract_terms_medicamentos(extract_args):
     row,_ = extract_args
     descricao, ean = row.rstrip('\n').split(';')
