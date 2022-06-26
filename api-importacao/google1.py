@@ -9,7 +9,6 @@ import time
 from datetime import datetime
 from email.utils import mktime_tz, parsedate_tz
 
-
 def googleSearch(query, delay):
     #this is the dict we store the search results
     g_clean = {} 

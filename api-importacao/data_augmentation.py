@@ -1,6 +1,6 @@
-import logging
+from log import init_log, register_log
+from google1 import googleSearch
 import argparse
-from googlesearch import search
 
 
 def argument_parser():
@@ -53,6 +53,7 @@ def write_data(target_file, data):
     with open(target_file, 'a') as f:
         f.write(''.join(data))
 
+
 def extract_terms_medicamentos(extract_args):
     row,_ = extract_args
     descricao, ean = row.rstrip('\n').split(';')
@@ -97,7 +98,7 @@ def proc_response(response, termos_desc, ean, s, dataset_name):
         termos_new = [t for t in new_desc.split() if len(t) > 2]
         # se possui pelo menos um termo da descrição original, adiciona ao conjunto
         if is_subset(termos_desc, termos_new):
-            new_row = '{};{};{}\n'.format(Scod, new_desc, ean)
+            new_row = '{};{};{}\n'.format(cod, new_desc, ean)
             s.add(new_row)
 
 
@@ -116,23 +117,23 @@ def main():
     # TODO: validar args
 
     # inicializando o log
-    #logging.basicConfig(,args.dataset_name)
+    init_log(args.dataset_name, args.use_col)
 
     # carregando dados
     data = load_data(args.src_file)
-    print('Data loaded.')
+    register_log('Data loaded.')
 
     # criando o arquivo target
     create_file(args.target_file)
-    print('Target file created.')
+    register_log('Target file created.')
 
     # inits
     buffer = 100
     data_augmented = list()
     extract_terms = get_function(args.dataset_name)
-    print('Initialized variables.')
+    register_log('Initialized variables.')
 
-    print('Process started.')
+    register_log('Process started.', print_msg=True)
 
     # process
     for i in range(1,len(data)):
@@ -150,7 +151,7 @@ def main():
         s = init_set(descricao, ean, args.dataset_name)
 
         # realiza a busca no google
-        response = search(descricao)
+        response = googleSearch(descricao, delay=args.request_delay)
 
         # extrai os dados pertinentes
         proc_response(response, termos_desc, ean, s, args.dataset_name)
@@ -165,13 +166,13 @@ def main():
             data_augmented = list()
 
         if i%100 == 0:
-            print('{} rows processed.'.format(i))
+            register_log('{} rows processed.'.format(i))
         
     # descarrega o buffer residual em arquivo
     if len(data_augmented) > 0:
         write_data(args.target_file, data_augmented)
 
-    print('Process finished.')
+    register_log('Process finished.', print_msg=True)
 
 
 if __name__ == "__main__":
