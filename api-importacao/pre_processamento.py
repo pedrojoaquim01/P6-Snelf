@@ -26,7 +26,7 @@ from selectorlib  import Extractor as xtc
 async def inicia_pre_processamento(csvFile):
     cols = ['DescricaoProduto','CLEAN']
     
-    data_path = './teste/'
+    data_path = './dados/'
     if not os.path.exists(data_path) :
         os.mkdir(data_path)
 
@@ -89,13 +89,13 @@ async def inicia_pre_processamento(csvFile):
 
     #Pensar em como executar o data augmentation
     async def data_Augmentation():
-        os.system('python ./data_augmentation.py "./teste/medicamentos.csv" "./teste/medicamentos_aumentado.csv" medicamentos 5')
+        os.system('python ./data_augmentation.py "./dados/medicamentos.csv" "./dados/medicamentos_aumentado.csv" medicamentos 5')
 
     await data_Augmentation()    
     
     #PRÉ PROCESSAMENTO PÓS AUGMENTATION
     # loading new_stopwords
-    with open('./pre_processamento/custom_stopwords.txt') as f:
+    with open('./auxiliar/custom_stopwords.txt') as f:
         data = f.read()
     new_stopwords = data.split()
 
@@ -252,7 +252,7 @@ async def inicia_pre_processamento(csvFile):
           encoding='utf-8')
 
     #MAPEAMENTO EAN
-    df_mapping = pd.read_pickle('./datasets/ean_key_mapping.pkl')
+    df_mapping = pd.read_pickle('./auxiliar/ean_key_mapping.pkl')
 
     data_file = 'medicamentos_aumentado_preproc.csv'
     df = pd.read_csv('{}{}'.format(data_path, data_file), 
@@ -270,7 +270,7 @@ async def inicia_pre_processamento(csvFile):
             encoding='utf-8')
 
     #OVERSAMPLING
-    data_medicamentos = './teste/medicamentos_aumentado_preproc_mapped.csv'
+    data_medicamentos = './dados/medicamentos_aumentado_preproc_mapped.csv'
     df_medicamentos = pd.read_csv(data_medicamentos, sep=';', dtype=str)
     df = pd.concat([df_medicamentos], ignore_index=True, sort=False)
 
@@ -281,7 +281,7 @@ async def inicia_pre_processamento(csvFile):
     elapsed_time = (time.time() - start) / 60
     df_oversampled = pd.concat([X_resampled, y_resampled], axis=1)
 
-    data_file = './teste/oversampled.csv'
+    data_file = './dados/oversampled.csv'
 
     df_oversampled.to_csv(data_file,
                       sep=';',
@@ -290,7 +290,7 @@ async def inicia_pre_processamento(csvFile):
                       encoding='utf-8')
 
     #TREINAMENTO
-    df = pd.read_csv('./teste/oversampled.csv', sep=';')
+    df = pd.read_csv('./dados/oversampled.csv', sep=';')
 
     # Obtendo somente os registros originais de medicamentos
     df = df[df['cod'] == 1]
@@ -307,21 +307,21 @@ async def inicia_pre_processamento(csvFile):
     # Split
     _, df_test = train_test_split(df, test_size=92, stratify=df['chave'])
 
-    # Gravando em arquivo o conjunto de teste
+    # Gravando em arquivo o conjunto de dados
     df_test['label'] = '__label__' + df_test['chave'].astype(str)
     df_test.drop(['cod', 'chave'], axis=1, inplace=True)
     df_test = df_test[['label', 'descricao']]
-    np.savetxt('./teste/data.test.txt', df_test, fmt='%s', encoding='utf-8')
+    np.savetxt('./dados/data.test.txt', df_test, fmt='%s', encoding='utf-8')
 
-    # Remover do dataset aumentado todos os registros com descrição pertencente ao conjunto de teste
-    df = pd.read_csv('./teste/oversampled.csv', sep=';')
+    # Remover do dataset aumentado todos os registros com descrição pertencente ao conjunto de dados
+    df = pd.read_csv('./dados/oversampled.csv', sep=';')
     df = df[~df['descricao'].isin(df_test['descricao'])]
 
     # Gravando em arquivo o conjunto de treino
     df['label'] = '__label__' + df['chave'].astype(str)
     df.drop(['cod', 'chave'], axis=1, inplace=True)
     df = df[['label', 'descricao']]
-    np.savetxt('./teste/data.train.txt', df, fmt='%s', encoding='utf-8')
+    np.savetxt('./dados/data.train.txt', df, fmt='%s', encoding='utf-8')
 
     #inserir condição para validar se ocorreu o pre processamento ou não
     return "Pré processamento feito com sucesso"
