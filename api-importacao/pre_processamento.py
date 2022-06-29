@@ -17,7 +17,7 @@ import asyncio
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.model_selection import train_test_split
 
-from selectorlib  import Extractor as xtc
+from lib.extractor1 import Extractor as xtc
 
 #Carrega dados
 #data_path = '../datasets/medicamentos/'
@@ -305,7 +305,7 @@ async def inicia_pre_processamento(csvFile):
     df = df[~df['chave'].isin(keys_to_remove)]
 
     # Split
-    _, df_test = train_test_split(df, test_size=92, stratify=df['chave'])
+    _, df_test = train_test_split(df, test_size=46, stratify=df['chave'])
 
     # Gravando em arquivo o conjunto de dados
     df_test['label'] = '__label__' + df_test['chave'].astype(str)
