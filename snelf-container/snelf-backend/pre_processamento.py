@@ -80,10 +80,10 @@ async def inicia_pre_processamento(csvFile):
     await medicamentos()
 
     #Pensar em como executar o data augmentation
-    # async def data_Augmentation():
-    #     os.system('python ./data_augmentation.py "./dados/medicamentos.csv" "./dados/medicamentos_aumentado.csv" medicamentos 5')
+    async def data_Augmentation():
+         os.system('python ./data_augmentation.py "./dados/medicamentos.csv" "./dados/medicamentos_aumentado.csv" medicamentos 1')
 
-    # await data_Augmentation()    
+    await data_Augmentation()    
     
     #PRÉ PROCESSAMENTO PÓS AUGMENTATION
     # loading new_stopwords
@@ -181,7 +181,6 @@ async def inicia_pre_processamento(csvFile):
     df_grouped = df_removed.groupby('master_idx')['removed_idx'].apply(list).reset_index()
 
     pd.set_option('display.max_colwidth', -1)
-
     master, removed = df_grouped.loc[0].values
     indexes = [master] + removed
     df.loc[indexes][['cod', 'descricao']]

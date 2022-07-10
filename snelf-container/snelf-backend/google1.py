@@ -12,7 +12,7 @@ from email.utils import mktime_tz, parsedate_tz
 def googleSearch(query, delay):
     #this is the dict we store the search results
     g_clean = {} 
-    
+    counter = 0
     #this is the actual query we are going to scrape
     url = 'https://www.google.com/search?client=ubuntu&channel=fs&q={}&ie=utf-8&oe=utf-8'.format(query)
 
@@ -36,6 +36,10 @@ def googleSearch(query, delay):
             
             # if too many requests was reached, try get "Retry-After" header
             if html.status_code==429:
+                counter += 1
+                if counter > 2:
+                    return g_clean
+
                 ra = html.headers.get("Retry-After")
                 if ra is not None:
                     if ra.isnumeric():
