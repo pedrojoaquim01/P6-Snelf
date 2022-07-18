@@ -1,7 +1,6 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
 import React from 'react'
 import Navbar from '../components/navbar/Navbar'
-import ImportExportIcon from '@mui/icons-material/ImportExport';
 import { Link } from 'react-router-dom';
 
 export default function Home() {

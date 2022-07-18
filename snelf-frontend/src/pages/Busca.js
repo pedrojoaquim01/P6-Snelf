@@ -34,7 +34,7 @@ export default function Busca() {
 
                         <Box pt={7}>
                             <Grid item>
-                                <Button component={Link} to="/" variant="contained">
+                                <Button component={Link} to="/resultado" variant="contained">
                                     Buscar
                                 </Button>
                             </Grid>

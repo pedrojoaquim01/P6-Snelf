@@ -8,6 +8,7 @@ import Busca from "./pages/Busca";
 import Home from "./pages/Home";
 import Importacao from "./pages/Importacao";
 import Sobre from "./pages/Sobre";
+import Resultado from "./pages/Resultado";
 import "./index.css"
 
 const root = ReactDOM.createRoot(
@@ -20,6 +21,7 @@ root.render(
                 <Route path="importacao" element={<Importacao />} />
                 <Route path="busca" element={<Busca />} />
                 <Route path="sobre" element={<Sobre />} />
+                <Route path="resultado" element={<Resultado />} />
             </Routes>
         </BrowserRouter>
 );
