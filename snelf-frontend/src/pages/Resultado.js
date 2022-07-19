@@ -2,10 +2,13 @@ import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import Navbar from "../components/navbar/Navbar";
 import ReactApexChart from "react-apexcharts";
+import { DataGrid } from '@mui/x-data-grid';
+import dadosProdutos from "../dados_mock_produtos.json"
+
 
 export default function Resultado() {
   //função que retorna a página a ser exibida na tela, tendo como base a opção selecionada na barra superior
-  const resultPage = (selectedPageId) => {
+  const getResultPage = (selectedPageId) => {
     if (selectedPageId === 1) {
       // gráfico da variável preço no tempo
       return (
@@ -13,7 +16,7 @@ export default function Resultado() {
           options={options}
           series={series}
           type="boxPlot"
-          height={500}
+          height={600}
         />
       );
     } else if (selectedPageId === 2) {
@@ -52,13 +55,21 @@ export default function Resultado() {
         </Grid>
       );
     } else if (selectedPageId === 3) {
-      return <div>tabela itens</div>;
+      return (
+        <DataGrid
+          rows={dadosProdutos}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+          autoHeight
+        />
+      );
     } else {
       return <div></div>;
     }
   };
 
-  //dados do gráfico mock só para POC
+  //MOCK: dados para o boxplot
   const series = [
     {
       type: "boxPlot",
@@ -113,9 +124,16 @@ export default function Resultado() {
     },
   };
 
+  //MOCK: colunas da tabela de compras
+  const columns = [
+    { field: 'nome', headerName: 'Nome', width: 450},
+    { field: 'preco', headerName: 'Valor de Compra', width: 200},
+    { field: 'ean', headerName: 'EAN', width: 200},
+    { field: 'dataDeCompra', headerName: 'Data da Compra', width: 200}
+  ];
+
   //variável que controla a barra de seleção, e consequentemente qual página está sendo exibida
   const [selectedPageId, setSelectedPageId] = React.useState(1);
-
   const selectPageById = (event, newSelectedPageId) => {
     setSelectedPageId(newSelectedPageId);
   };
@@ -133,11 +151,11 @@ export default function Resultado() {
             rowSpacing={1}
             alignItems="center"
           >
-            <Box pt={5} pb={1} textAlign="center">
+            <Box pb={1} textAlign="center">
               <Typography variant="h3">Resultado</Typography>
             </Box>
 
-            <Box p={2} pb={4} textAlign="center">
+            <Box pt={2} pb={4} textAlign="center">
               <Typography variant="h8">
                 Resultado da busca pelo produto X
               </Typography>
@@ -161,7 +179,9 @@ export default function Resultado() {
         </Box>
 
         {/* Resultado */}
-        {resultPage(selectedPageId)}
+        <Box pb={10} height="80vh" width="100%" m="auto">
+          {getResultPage(selectedPageId)}
+        </Box>
       </Box>
     </div>
   );
