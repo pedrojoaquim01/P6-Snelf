@@ -89,9 +89,9 @@ async def inicia_pre_processamento(csvFile):
 
     #Pensar em como executar o data augmentation
     async def data_Augmentation():
-        os.system('python ./data_augmentation.py "./dados/medicamentos.csv" "./dados/medicamentos_aumentado.csv" medicamentos 5')
+        os.system('python ./data_augmentation.py "./dados/medicamentos.csv" "./dados/medicamentos_aumentado.csv" medicamentos 3')
 
-    await data_Augmentation()    
+    #await data_Augmentation()    
     
     #PRÉ PROCESSAMENTO PÓS AUGMENTATION
     # loading new_stopwords
@@ -188,7 +188,7 @@ async def inicia_pre_processamento(csvFile):
     df_removed = pd.DataFrame(removed, columns=['master_idx', 'removed_idx'])    
     df_grouped = df_removed.groupby('master_idx')['removed_idx'].apply(list).reset_index()
 
-    pd.set_option('display.max_colwidth', -1)
+    pd.set_option('display.max_colwidth', None)
 
     master, removed = df_grouped.loc[0].values
     indexes = [master] + removed
@@ -276,6 +276,8 @@ async def inicia_pre_processamento(csvFile):
 
     start = time.time()
     ros = RandomOverSampler(random_state=0)
+
+    print(ros.fit_resample(pd.DataFrame(df[['cod', 'descricao']]), df['chave']))
 
     X_resampled, y_resampled = ros.fit_resample(pd.DataFrame(df[['cod', 'descricao']]), df['chave'])
     elapsed_time = (time.time() - start) / 60

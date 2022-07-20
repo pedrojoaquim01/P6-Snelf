@@ -7,3 +7,5 @@ nltk==3.7
 fastapi>=0.68.0,<0.69.0
 uvicorn>=0.15.0,<0.16.0
 python-multipart==0.0.5
+cython==0.29.30
+fasttext_win==0.8.3
