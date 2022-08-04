@@ -2,8 +2,7 @@ import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import Navbar from "../components/navbar/Navbar";
 import ReactApexChart from "react-apexcharts";
-import { DataGrid } from '@mui/x-data-grid';
-import dadosProdutos from "../dados_mock_produtos.json"
+import ListaDeCompras from './resultado/ListaDeCompras'
 
 
 export default function Resultado() {
@@ -56,13 +55,7 @@ export default function Resultado() {
       );
     } else if (selectedPageId === 3) {
       return (
-        <DataGrid
-          rows={dadosProdutos}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          autoHeight
-        />
+        <ListaDeCompras/>
       );
     } else {
       return <div></div>;
@@ -123,14 +116,6 @@ export default function Resultado() {
       },
     },
   };
-
-  //MOCK: colunas da tabela de compras
-  const columns = [
-    { field: 'nome', headerName: 'Nome', width: 450},
-    { field: 'preco', headerName: 'Valor de Compra', width: 200},
-    { field: 'ean', headerName: 'EAN', width: 200},
-    { field: 'dataDeCompra', headerName: 'Data da Compra', width: 200}
-  ];
 
   //variável que controla a barra de seleção, e consequentemente qual página está sendo exibida
   const [selectedPageId, setSelectedPageId] = React.useState(1);
