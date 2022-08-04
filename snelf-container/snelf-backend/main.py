@@ -2,6 +2,8 @@ from http.client import HTTPException
 from fastapi import FastAPI, File, UploadFile
 from starlette.middleware.cors import CORSMiddleware
 from pre_processamento import inicia_pre_processamento
+import fasttext 
+
 
 app = FastAPI()
 
@@ -31,6 +33,7 @@ async def importarCsv(csvFile: UploadFile = File(...)):
         #cleaned_dataset = clean_dataset(csvFile)
         #aqui seria a chamada para a api do modelo, iniciando o pré processamento
         await inicia_pre_processamento(csvFile)
+        fasttext.supervised('dados/data.train.txt','modelo/modelo')
         return {"filename": csvFile.filename, "status":"Arquivo recebido na API de importação"}
     else:
         raise HTTPException(status_code=422, detail="Formato de arquivo não suportado")
