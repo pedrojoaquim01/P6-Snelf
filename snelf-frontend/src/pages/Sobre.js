@@ -24,13 +24,13 @@ export default function Sobre() {
 
                         <Box p={2} pb={2} textAlign="center">
                             <Typography variant="h8">
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                            O SNELF é uma plataforma para detecção de disparidades de preços em compras públicas. O objetivo é auxiliar na auditoria de notas fiscais relacionadas a compras, e verificar possíveis fraudes.
                             </Typography>
                         </Box>
 
                         <Box p={2} pb={2} textAlign="center">
                             <Typography variant="h8">
-                            Desenvolvido pelos alunos Filipe Shanom Xavier, Pedro Joaquim e João Pedro Maues
+                            Desenvolvido pelos alunos Filipe Shanom Xavier e Pedro Joaquim
                             </Typography>
                         </Box>
 

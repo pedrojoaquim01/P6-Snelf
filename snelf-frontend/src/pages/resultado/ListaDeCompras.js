@@ -21,7 +21,7 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import { ThemeProvider, createTheme, rgba } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 //tema
 const theme = createTheme({
@@ -29,9 +29,9 @@ const theme = createTheme({
     // Name of the component
     TableRow: {
       styleOverrides: {
-          '&:hover': {
-            //backgroundColor:alpha(0.78) /*where 0.5 stands for 50% opacity*/
-          }
+        "&:hover": {
+          //backgroundColor:alpha(0.78) /*where 0.5 stands for 50% opacity*/
+        },
       },
     },
   },
@@ -84,7 +84,6 @@ const headCells = [
     disablePadding: false,
     label: "Quantidade Comercial",
   },
-  ,
   {
     id: "valorunitariocomercial",
     numeric: true,
@@ -102,13 +101,13 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "CLEAN",
-  },{
+  },
+  {
     id: "foiPredito",
     numeric: false,
     disablePadding: false,
     label: "Foi Predito?",
   },
-  
 ];
 
 function EnhancedTableHead(props) {
@@ -209,7 +208,10 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Lista de compras para o produto <Typography sx={{ fontWeight: 'bold' }} variant="h8">Dipirona</Typography>
+          Lista de compras para o produto{" "}
+          <Typography sx={{ fontWeight: "bold" }} variant="h8">
+            Dipirona
+          </Typography>
         </Typography>
       )}
 
@@ -232,21 +234,21 @@ const EnhancedTableToolbar = (props) => {
 
 const foiPredito = (val) => {
   if (val) {
-    return 'Sim';
+    return "Sim";
   }
-  return 'Não';
+  return "Não";
 };
 
-const removeCelula = (rows, rowsSelected, selectRows) => {
+const removeCelula = (rows, rowsSelected, setRows) => {
   rows = rows.filter((e) => rowsSelected.includes(e.id) === false);
-  selectRows(rows)
+  setRows(rows);
 };
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({dataset,setDataset, selectDataset}) {
+export default function EnhancedTable({ dataset, setDataset, selectDataset }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("nome");
   const [selected, setSelected] = React.useState([]);
@@ -256,8 +258,6 @@ export default function EnhancedTable({dataset,setDataset, selectDataset}) {
   //const [rows, setRows] = React.useState(dataset);
   const rows = dataset;
   const setRows = setDataset;
-  const selectRows = selectDataset;
-
 
   const handleRowDeletion = (r) => {
     setRows(r);
@@ -315,9 +315,9 @@ export default function EnhancedTable({dataset,setDataset, selectDataset}) {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const coloreLinha = (CLEAN) => {
-    var corNaoPredito = { "backgroundColor": "#DBF0FF" };
-    var corPredito = { "backgroundColor": "#FFDBDB" };
-    if (CLEAN != 'N/I' && CLEAN != '-1') {
+    var corNaoPredito = { backgroundColor: "#DBF0FF" };
+    var corPredito = { backgroundColor: "#FFDBDB" };
+    if (CLEAN !== "N/I" && CLEAN !== "-1") {
       return corNaoPredito;
     } else {
       return corPredito;
@@ -391,14 +391,28 @@ export default function EnhancedTable({dataset,setDataset, selectDataset}) {
                           {row.CodigoNFe}
                         </TableCell>
                         <TableCell align="right">{row.DataEmissao}</TableCell>
-                        <TableCell align="right">{row.MunicipioEmitente}</TableCell>
-                        <TableCell align="right">{row.unidadecomercial}</TableCell>
-                        <TableCell align="right">{row.quantidadecomercial}</TableCell>
-                        <TableCell align="right">R${row.valorunitariocomercial}</TableCell>
-                        <TableCell align="right">{row.DescricaoProduto}</TableCell>
+                        <TableCell align="right">
+                          {row.MunicipioEmitente}
+                        </TableCell>
+                        <TableCell align="right">
+                          {row.unidadecomercial}
+                        </TableCell>
+                        <TableCell align="right">
+                          {row.quantidadecomercial}
+                        </TableCell>
+                        <TableCell align="right">
+                          R${row.valorunitariocomercial}
+                        </TableCell>
+                        <TableCell align="right">
+                          {row.DescricaoProduto}
+                        </TableCell>
                         <TableCell align="right">{row.CLEAN}</TableCell>
                         <TableCell align="right">
-                          {foiPredito(row.CLEAN != 'N/I' | row.CLEAN != '-1' ? false : true)}
+                          {foiPredito(
+                            row.CLEAN !== "N/I" && row.CLEAN !== "-1"
+                              ? false
+                              : true
+                          )}
                         </TableCell>
                       </TableRow>
                     );
@@ -416,7 +430,7 @@ export default function EnhancedTable({dataset,setDataset, selectDataset}) {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]} 
+            rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}

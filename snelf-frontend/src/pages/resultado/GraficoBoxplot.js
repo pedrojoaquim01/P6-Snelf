@@ -1,63 +1,101 @@
 import ReactApexChart from "react-apexcharts";
 import React from "react";
+import { calculaMediana } from "./dispertionFunctions";
 
-export default function GraficoBoxPlot({ dataset }) {
-  //MOCK: dados para o boxplot
-  const series = [
+function calculaSeriePorMes(mesDesejado, dataset) {
+  let cleanDataset = Object.entries(dataset)
+    .filter((e) => {
+      let data = e[1].DataEmissao;
+      let mes = data[5] + data[6];
+      if (mes === mesDesejado) {
+        return true;
+      }else{
+        return false;
+      }
+    })
+    .map((e) => e[1].valorunitariocomercial);
+
+  let mediana = calculaMediana(cleanDataset).toFixed(2);
+  console.log(mediana)
+
+  let minimo = cleanDataset.reduce((a, b) => {
+    return Math.min(a, b);
+  });
+
+  let maximo = cleanDataset.reduce((a, b) => {
+    return Math.max(a, b);
+  });
+
+  let datasetq1 = cleanDataset.filter((e) => e < mediana);
+  console.log(datasetq1)
+  let q1 = calculaMediana(datasetq1);
+
+
+  let datasetq3 = cleanDataset.filter((e) => e > mediana);
+  let q3 = calculaMediana(datasetq3);
+
+  return [minimo, q1, mediana, q3, maximo];
+}
+
+function geraSeries(dataset) {
+  return [
     {
       type: "boxPlot",
       data: [
         {
           x: "Jan 2018",
-          y: [54, 66, 69, 75, 88],
+          y: calculaSeriePorMes("01", dataset),
         },
         {
           x: "Fev 2018",
-          y: [43, 65, 69, 76, 81],
+          y: calculaSeriePorMes("02", dataset),
         },
         {
           x: "Mar 2018",
-          y: [31, 39, 45, 51, 59],
+          y: calculaSeriePorMes("03", dataset),
         },
         {
           x: "Abr 2018",
-          y: [39, 46, 55, 65, 71],
+          y: calculaSeriePorMes("04", dataset),
         },
         {
           x: "Maio 2018",
-          y: [29, 31, 35, 39, 44],
+          y: calculaSeriePorMes("05", dataset),
         },
         {
           x: "Jun 2018",
-          y: [41, 49, 58, 61, 67],
+          y: calculaSeriePorMes("06", dataset),
         },
         {
           x: "Jul 2018",
-          y: [54, 59, 66, 71, 88],
+          y: calculaSeriePorMes("07", dataset),
         },
         {
           x: "Ago 2018",
-          y: [54, 59, 66, 71, 88],
+          y: calculaSeriePorMes("08", dataset),
         },
         {
           x: "Set 2018",
-          y: [54, 59, 66, 71, 88],
+          y: calculaSeriePorMes("09", dataset),
         },
         {
           x: "Out 2018",
-          y: [54, 59, 66, 71, 88],
+          y: calculaSeriePorMes("10", dataset),
         },
         {
           x: "Nov 2018",
-          y: [54, 59, 66, 71, 88],
+          y: calculaSeriePorMes("11", dataset),
         },
         {
           x: "Dez 2018",
-          y: [54, 59, 66, 71, 88],
+          y: calculaSeriePorMes("12", dataset),
         },
       ],
     },
   ];
+}
+
+export default function GraficoBoxPlot({ dataset }) {
   const options = {
     chart: {
       type: "boxPlot",
@@ -70,7 +108,7 @@ export default function GraficoBoxPlot({ dataset }) {
     plotOptions: {
       boxPlot: {
         colors: {
-          upper: "#1769aa",
+          upper: "#0069fa",
           lower: "#4dabf5",
         },
       },
@@ -79,7 +117,7 @@ export default function GraficoBoxPlot({ dataset }) {
   return (
     <ReactApexChart
       options={options}
-      series={series}
+      series={geraSeries(dataset)}
       type="boxPlot"
       height={600}
     />

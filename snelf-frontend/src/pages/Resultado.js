@@ -18,7 +18,7 @@ export function getResultPage(
 ) {
   if (selectedPageId === 3) {
     // gráfico da variável preço no tempo
-    return <GraficoBoxPlot />;
+    return <GraficoBoxPlot dataset={dataset}/>;
   } else if (selectedPageId === 2) {
     //página com os dados da variável preço no tempo
     return <DadosDoPreco dataset={dataset} />;
