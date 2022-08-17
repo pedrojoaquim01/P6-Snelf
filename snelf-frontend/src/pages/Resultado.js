@@ -1,126 +1,52 @@
 import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
-import React from "react";
 import Navbar from "../components/navbar/Navbar";
-import ReactApexChart from "react-apexcharts";
-import ListaDeCompras from './resultado/ListaDeCompras'
+import React from "react";
+import ListaDeCompras from "./resultado/ListaDeCompras";
+import DadosDoPreco from "./resultado/DadosDoPreco";
+import GraficoBoxPlot from "./resultado/GraficoBoxplot";
 
+//import dados mock dipirona
+import dadosProdutos from "../DADOS_REAIS_MOCK.json";
+var dadosMock = Object.keys(dadosProdutos).map((key) => dadosProdutos[key]);
+
+//função que retorna a página a ser exibida na tela, tendo como base a opção selecionada na barra superior
+export function getResultPage(
+  selectedPageId,
+  dataset,
+  setDataset,
+  selectDataset
+) {
+  if (selectedPageId === 3) {
+    // gráfico da variável preço no tempo
+    return <GraficoBoxPlot />;
+  } else if (selectedPageId === 2) {
+    //página com os dados da variável preço no tempo
+    return <DadosDoPreco dataset={dataset} />;
+  } else if (selectedPageId === 1) {
+    return (
+      <ListaDeCompras
+        dataset={dataset}
+        setDataset={setDataset}
+        selectDataset={selectDataset}
+      />
+    );
+  } else {
+    return <div></div>;
+  }
+}
 
 export default function Resultado() {
-  //função que retorna a página a ser exibida na tela, tendo como base a opção selecionada na barra superior
-  const getResultPage = (selectedPageId) => {
-    if (selectedPageId === 1) {
-      // gráfico da variável preço no tempo
-      return (
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="boxPlot"
-          height={600}
-        />
-      );
-    } else if (selectedPageId === 2) {
-      //página com os dados da variável preço no tempo
-      return (
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          rowSpacing={1}
-          alignItems="center"
-        >
-          <Box p={2} textAlign="center">
-            <Typography variant="h8">
-              Os dados estatísticos totais sobre a variável preço na busca foram
-            </Typography>
-          </Box>
-          <Box p={2} textAlign="center">
-            <Typography variant="h4">Média:</Typography>{" "}
-            <Typography variant="h3" fontWeight="bold">
-              14.56
-            </Typography>
-          </Box>
-          <Box p={2} textAlign="center">
-            <Typography variant="h4">Moda:</Typography>{" "}
-            <Typography variant="h3" fontWeight="bold">
-              10.10
-            </Typography>
-          </Box>
-          <Box p={2} textAlign="center">
-            <Typography variant="h4">Mediana:</Typography>{" "}
-            <Typography variant="h3" fontWeight="bold">
-              35.90
-            </Typography>
-          </Box>
-        </Grid>
-      );
-    } else if (selectedPageId === 3) {
-      return (
-        <ListaDeCompras/>
-      );
-    } else {
-      return <div></div>;
-    }
-  };
-
-  //MOCK: dados para o boxplot
-  const series = [
-    {
-      type: "boxPlot",
-      data: [
-        {
-          x: "Jan 2015",
-          y: [54, 66, 69, 75, 88],
-        },
-        {
-          x: "Jan 2016",
-          y: [43, 65, 69, 76, 81],
-        },
-        {
-          x: "Jan 2017",
-          y: [31, 39, 45, 51, 59],
-        },
-        {
-          x: "Jan 2018",
-          y: [39, 46, 55, 65, 71],
-        },
-        {
-          x: "Jan 2019",
-          y: [29, 31, 35, 39, 44],
-        },
-        {
-          x: "Jan 2020",
-          y: [41, 49, 58, 61, 67],
-        },
-        {
-          x: "Jan 2021",
-          y: [54, 59, 66, 71, 88],
-        },
-      ],
-    },
-  ];
-  const options = {
-    chart: {
-      type: "boxPlot",
-      height: 350,
-    },
-    title: {
-      text: "Preço para o produto X de Janeiro 2015 até Janeiro 2021",
-      align: "left",
-    },
-    plotOptions: {
-      boxPlot: {
-        colors: {
-          upper: "#1769aa",
-          lower: "#4dabf5",
-        },
-      },
-    },
-  };
-
   //variável que controla a barra de seleção, e consequentemente qual página está sendo exibida
   const [selectedPageId, setSelectedPageId] = React.useState(1);
   const selectPageById = (event, newSelectedPageId) => {
     setSelectedPageId(newSelectedPageId);
+  };
+
+  //variável que controla o dataset para exclusão de registros
+  const [dataset, setDataset] = React.useState(dadosMock);
+  const selectDataset = (event, newDataset) => {
+    setDataset(newDataset);
+    console.log(newDataset);
   };
 
   return (
@@ -142,7 +68,10 @@ export default function Resultado() {
 
             <Box pt={2} pb={4} textAlign="center">
               <Typography variant="h8">
-                Resultado da busca pelo produto X
+                Resultado da busca pelo produto{" "}
+                <Typography sx={{ fontWeight: "bold" }} variant="h8">
+                  Dipirona
+                </Typography>
               </Typography>
             </Box>
           </Grid>
@@ -157,15 +86,15 @@ export default function Resultado() {
           }}
         >
           <Tabs value={selectedPageId} onChange={selectPageById} centered>
-            <Tab label="Gráfico da variável preço" value={1} />
+            <Tab label="Lista de compras" value={1} />
             <Tab label="Dados da variável preço" value={2} />
-            <Tab label="Lista de compras" value={3} />
+            <Tab label="Gráfico da variável preço" value={3} />
           </Tabs>
         </Box>
 
         {/* Resultado */}
         <Box pb={10} height="80vh" width="100%" m="auto">
-          {getResultPage(selectedPageId)}
+          {getResultPage(selectedPageId, dataset, setDataset, selectDataset)}
         </Box>
       </Box>
     </div>

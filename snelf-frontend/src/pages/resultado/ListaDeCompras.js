@@ -23,11 +23,6 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { ThemeProvider, createTheme, rgba } from "@mui/material/styles";
 
-//import dados mock
-import dadosProdutos from "../../MOCK_DATA_com_predicao.json";
-import { blue, red } from "@mui/material/colors";
-var dataset = Object.keys(dadosProdutos).map((key) => dadosProdutos[key]);
-
 //tema
 const theme = createTheme({
   components: {
@@ -60,35 +55,60 @@ function getComparator(order, orderBy) {
 
 const headCells = [
   {
-    id: "nome",
-    numeric: false,
-    disablePadding: true,
-    label: "Nome",
-  },
-  {
-    id: "preco",
+    id: "CodigoNFe",
     numeric: true,
     disablePadding: false,
-    label: "Preço",
+    label: "Código NFE",
   },
   {
-    id: "ean",
-    numeric: true,
-    disablePadding: false,
-    label: "EAN",
-  },
-  {
-    id: "dataDeCompra",
+    id: "DataEmissao",
     numeric: false,
     disablePadding: false,
-    label: "Data da Compra",
+    label: "Data de Emissão",
   },
   {
+    id: "MunicipioEmitente",
+    numeric: false,
+    disablePadding: false,
+    label: "Município Emitente",
+  },
+  {
+    id: "unidadecomercial",
+    numeric: false,
+    disablePadding: false,
+    label: "Unidade Comercial",
+  },
+  {
+    id: "quantidadecomercial",
+    numeric: true,
+    disablePadding: false,
+    label: "Quantidade Comercial",
+  },
+  ,
+  {
+    id: "valorunitariocomercial",
+    numeric: true,
+    disablePadding: false,
+    label: "Valor Unitário Comercial",
+  },
+  {
+    id: "DescricaoProduto",
+    numeric: false,
+    disablePadding: false,
+    label: "Descrição do Produto",
+  },
+  {
+    id: "CLEAN",
+    numeric: true,
+    disablePadding: false,
+    label: "CLEAN",
+  },{
     id: "foiPredito",
     numeric: false,
     disablePadding: false,
     label: "Foi Predito?",
   },
+  
 ];
 
 function EnhancedTableHead(props) {
@@ -189,7 +209,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Lista de Compras
+          Lista de compras para o produto <Typography sx={{ fontWeight: 'bold' }} variant="h8">Dipirona</Typography>
         </Typography>
       )}
 
@@ -212,28 +232,32 @@ const EnhancedTableToolbar = (props) => {
 
 const foiPredito = (val) => {
   if (val) {
-    return "Sim";
+    return 'Sim';
   }
-  return "Não";
+  return 'Não';
 };
 
-const removeCelula = (rows, rowsSelected, setRows) => {
+const removeCelula = (rows, rowsSelected, selectRows) => {
   rows = rows.filter((e) => rowsSelected.includes(e.id) === false);
-  setRows(rows);
+  selectRows(rows)
 };
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable({dataset,setDataset, selectDataset}) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("nome");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [rows, setRows] = React.useState(dataset);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  //const [rows, setRows] = React.useState(dataset);
+  const rows = dataset;
+  const setRows = setDataset;
+  const selectRows = selectDataset;
+
 
   const handleRowDeletion = (r) => {
     setRows(r);
@@ -290,13 +314,13 @@ export default function EnhancedTable() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  const coloreLinha = (foiPredito) => {
+  const coloreLinha = (CLEAN) => {
     var corNaoPredito = { "backgroundColor": "#DBF0FF" };
     var corPredito = { "backgroundColor": "#FFDBDB" };
-    if (foiPredito === true) {
-      return corPredito;
-    } else {
+    if (CLEAN != 'N/I' && CLEAN != '-1') {
       return corNaoPredito;
+    } else {
+      return corPredito;
     }
   };
 
@@ -346,7 +370,7 @@ export default function EnhancedTable() {
                         tabIndex={-1}
                         key={row.id}
                         selected={isItemSelected}
-                        sx={coloreLinha(row.foiPredito)}
+                        sx={coloreLinha(row.CLEAN)}
                         root="true"
                       >
                         <TableCell padding="checkbox">
@@ -360,17 +384,21 @@ export default function EnhancedTable() {
                         </TableCell>
                         <TableCell
                           component="th"
-                          id={row.nome}
+                          id={row.CodigoNFe}
                           scope="row"
                           padding="none"
                         >
-                          {row.nome}
+                          {row.CodigoNFe}
                         </TableCell>
-                        <TableCell align="right">{row.preco}</TableCell>
-                        <TableCell align="right">{row.ean}</TableCell>
-                        <TableCell align="right">{row.dataDeCompra}</TableCell>
+                        <TableCell align="right">{row.DataEmissao}</TableCell>
+                        <TableCell align="right">{row.MunicipioEmitente}</TableCell>
+                        <TableCell align="right">{row.unidadecomercial}</TableCell>
+                        <TableCell align="right">{row.quantidadecomercial}</TableCell>
+                        <TableCell align="right">R${row.valorunitariocomercial}</TableCell>
+                        <TableCell align="right">{row.DescricaoProduto}</TableCell>
+                        <TableCell align="right">{row.CLEAN}</TableCell>
                         <TableCell align="right">
-                          {foiPredito(row.foiPredito)}
+                          {foiPredito(row.CLEAN != 'N/I' | row.CLEAN != '-1' ? false : true)}
                         </TableCell>
                       </TableRow>
                     );
@@ -388,7 +416,7 @@ export default function EnhancedTable() {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25]} 
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
