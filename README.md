@@ -13,7 +13,7 @@ O SNELF foi desenvolvido utilizando arquitetura REST, então subindo o docker co
 ### 1. Subir o SNELF Container
 
 #### Requerimentos
-Instalar o Docker e o Python 3.9
+Instalar `Docker 20>= , Python 3.9>=`
 
 #### Execução
 Rodar o script `sobeDocker.sh` como administrador.
@@ -28,6 +28,8 @@ Rodar o container
 
 
 ### 2. Subir o SNELF Front End
+Instalar `node 16.15>=`
+
 Para testar a aplicação, clone o repositório.
 
 No diretório raiz `snelf-frontend`, instale as dependências com o comando `npm install`
