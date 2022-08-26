@@ -6,7 +6,7 @@ O SNELF é uma plataforma para detecção de disparidades de preços em compras 
 Assim, quando importamos a base de dados, o modelo já classifica cada registro com um código diferente, que relaciona os mesmos medicamentos porém com nomes distintos. Após isso, podem ser realizadas buscas por nomes de medicamentos, que retornam um conjunto de compras de notas fiscais. Na tela podemos observar dados sobre o conjunto de dados requisitado, como média, moda, mediana, uma tabela com todas as compras retornadas, e um gráfico boxplot com a variável preço no tempo. Também conseguimos excluir algum registro do cálculo se for desejado, dando mais flexibilidade para quem está fazendo a análise.
 
 ### Arquitetura e tecnologias
-O SNELF foi desenvolvido utilizando arquitetura REST, então subindo o docker conseguimos tornar nossos endpoints públicos para acesso. O frontend foi desenvolvido utilzando ReactJS, framework javascript bem flexível e level.
+O SNELF foi desenvolvido utilizando arquitetura REST, utilizando o framework Python FastAPI, que serve para criar APIs de forma bem simples. Dessa forma, subindo o docker com o backend, conseguimos disponibilizar nossos endpoints para acesso da interface. O frontend foi desenvolvido utilzando ReactJS, framework javascript bem flexível.
 
 ## Como utilizar?
 
